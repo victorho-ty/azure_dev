@@ -1,0 +1,8 @@
+{
+  "authority": "https://login.microsoftonline.com/629af545-8611-44af-9fec-9a098d3e80ca",
+  "client_id": "facfe467-8660-40f9-acd0-c397d9088168",
+  "scope": [ "https://graph.microsoft.com/.default" ],
+  "thumbprint": "C134EB5936780CFFA7B672E5AD6AFDF94189124F",
+  "private_key_file": "/Users/vichoty/dev/src/azuredev/certs/server.pem",
+  "endpoint": "https://graph.microsoft.com/v1.0/users"
+}
