@@ -1,2 +1,2 @@
 # Azure_dev
-Prototype work on Azure AD Direcoty and Azure Cloud Compute
+Prototype work on Azure AD Directory and Azure Cloud Compute
