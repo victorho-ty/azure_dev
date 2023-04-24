@@ -1,6 +1,7 @@
 import requests
 import jwt
 import json
+from datetime import datetime, timedelta
 # pip install pyjwt
 #import msal
 
@@ -42,8 +43,8 @@ def validate(access_token):
     token_headers = jwt.get_unverified_header(access_token)
     token_alg = token_headers['alg']
     token_kid = token_headers['kid']
-    print("Token algo: %s" % token_alg)
-    print("Token kid: %s" % token_kid)
+    print("Header algo: %s" % token_alg)
+    print("Header kid: %s" % token_kid)
 
     public_key = get_public_key(access_token, token_kid)
 
@@ -57,10 +58,31 @@ def validate(access_token):
         audience=["api://facfe467-8660-40f9-acd0-c397d9088168"]
     )
 
-    print("SUCCESS in decoding, verified Signature")
-    print(decoded_token)
+    print("SUCCESS. Decodeds, verified Signature")
+    return decoded_token
+
+
+def has_token_expired(exp_value):
+    """
+    Check if JWT has expired
+    :param exp_value:
+    :return: True/False
+    """
+    expiration_time = datetime.utcfromtimestamp(exp)
+    print("Token expiry (UTC): %s" % str(expiration_time))
+    return datetime.utcnow() > expiration_time
 
 
 if __name__ == '__main__':
-    access_token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Ii1LSTNROW5OUjdiUm9meG1lWm9YcWJIWkdldyIsImtpZCI6Ii1LSTNROW5OUjdiUm9meG1lWm9YcWJIWkdldyJ9.eyJhdWQiOiJhcGk6Ly9mYWNmZTQ2Ny04NjYwLTQwZjktYWNkMC1jMzk3ZDkwODgxNjgiLCJpc3MiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC82MjlhZjU0NS04NjExLTQ0YWYtOWZlYy05YTA5OGQzZTgwY2EvIiwiaWF0IjoxNjgxOTc1MjA0LCJuYmYiOjE2ODE5NzUyMDQsImV4cCI6MTY4MTk3OTEwNCwiYWlvIjoiRTJaZ1lQaW1sZjBzcWZsYThvK2JGbytmaFlmZUJRQT0iLCJhcHBpZCI6ImZhY2ZlNDY3LTg2NjAtNDBmOS1hY2QwLWMzOTdkOTA4ODE2OCIsImFwcGlkYWNyIjoiMiIsImlkcCI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzYyOWFmNTQ1LTg2MTEtNDRhZi05ZmVjLTlhMDk4ZDNlODBjYS8iLCJvaWQiOiI2N2UyNTdkYy01NWFkLTQ0OTQtODVjMy1kZmEwZGNmOWY0N2YiLCJyaCI6IjAuQVVvQVJmV2FZaEdHcjBTZjdKb0pqVDZBeW1ma3pfcGdodmxBck5ERGw5a0lnV2lKQUFBLiIsInN1YiI6IjY3ZTI1N2RjLTU1YWQtNDQ5NC04NWMzLWRmYTBkY2Y5ZjQ3ZiIsInRpZCI6IjYyOWFmNTQ1LTg2MTEtNDRhZi05ZmVjLTlhMDk4ZDNlODBjYSIsInV0aSI6IlNVQ1E0VVdWSmtHQWNMODR2SWRMQUEiLCJ2ZXIiOiIxLjAifQ.Qc0-NwBhoFmXEbtsxYVN2N8pcbISjP12cjRhxm6FJ1KdaVwHaH1iCvshOej0rrfN8dd_kG--wJW9aqp1f5RdYc9iDlkAlYdDgJB-UvRhLSgSezt_XRocO-G0IcU4dwHt6r_nCuJfC3jupHjQ6RpqjYhT4az3iJ_LxTo5Njks7sKye-43Mr5lDULDgyT1C-gYptjjs0pHaco3e6Rnsy5Y2FqP-R2ekgDBg9douC9r29sVHMT-g6aGsPOfHiC4xvjOqYllpHN8jWL6z2tl9p0lJv77B4ee_s7LyQ6pjkyXyo8Q05FTRSIC7J4MX4i2IydOmpXU25TVlBsZpcearSMXOQ'
-    validate(access_token)
+    access_token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Ii1LSTNROW5OUjdiUm9meG1lWm9YcWJIWkdldyIsImtpZCI6Ii1LSTNROW5OUjdiUm9meG1lWm9YcWJIWkdldyJ9.eyJhdWQiOiJhcGk6Ly9mYWNmZTQ2Ny04NjYwLTQwZjktYWNkMC1jMzk3ZDkwODgxNjgiLCJpc3MiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC82MjlhZjU0NS04NjExLTQ0YWYtOWZlYy05YTA5OGQzZTgwY2EvIiwiaWF0IjoxNjgyMzEzMjYyLCJuYmYiOjE2ODIzMTMyNjIsImV4cCI6MTY4MjMxNzE2MiwiYWlvIjoiRTJaZ1lHRE04VERwK05yQ3VITWhqM0hLMDdvREFBPT0iLCJhcHBpZCI6ImZhY2ZlNDY3LTg2NjAtNDBmOS1hY2QwLWMzOTdkOTA4ODE2OCIsImFwcGlkYWNyIjoiMiIsImlkcCI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzYyOWFmNTQ1LTg2MTEtNDRhZi05ZmVjLTlhMDk4ZDNlODBjYS8iLCJvaWQiOiI2N2UyNTdkYy01NWFkLTQ0OTQtODVjMy1kZmEwZGNmOWY0N2YiLCJyaCI6IjAuQVVvQVJmV2FZaEdHcjBTZjdKb0pqVDZBeW1ma3pfcGdodmxBck5ERGw5a0lnV2lKQUFBLiIsInN1YiI6IjY3ZTI1N2RjLTU1YWQtNDQ5NC04NWMzLWRmYTBkY2Y5ZjQ3ZiIsInRpZCI6IjYyOWFmNTQ1LTg2MTEtNDRhZi05ZmVjLTlhMDk4ZDNlODBjYSIsInV0aSI6IkxQUzJpY2syVVVtSUJURWM0NmxFQUEiLCJ2ZXIiOiIxLjAifQ.f6xH-pTCHRaWRB1muzfbmszCYSjzM1874-wJ6ylCRl1w03nnfzSsEs296efRV_zqVgayQ_kpMjbjsZlh8C9hWoMRtjQdFskC_gyvnEgf58VMlZPJiBTv37k6lZ3OzSN8uPaeiF1DlnT5EocD0gjt9w6SP-ognW_tI4iJG1aOLFkUQWOOYtMU3ByaifYSrs_5WbQ1BMKELIOGqIvQ_brfgvIBWBclzSwF0AMovw5WMpN_KuVEOqT9B5aKcp24cHm6xWPV8shSURf9TsbTliDYj64p6CKboTY1i3aTwtsa3Q98q6H9BCwCjVxSZKjXkN22HKIqjVr7GY5M_ItYAHvFnA'
+    decoded_token = validate(access_token)
+
+    aud = decoded_token.get('aud', None)
+    exp = decoded_token.get('exp', None)
+    # Check if the token has expired
+    if has_token_expired(exp):
+        print("Error: JWT token has expired")
+
+    print("audience: %s" % aud)
+
+
