@@ -1,0 +1,29 @@
+{
+"type": {
+    "client_type": "CONFIDENTIAL",
+    "authority_type": "SINGLE_TENANT",
+    "framework": "FLASK"
+    },
+"client": {
+    "client_id": "facfe467-8660-40f9-acd0-c397d9088168",
+    "client_credential": "Enq8Q~Zy-E3yezAs8XA0.qh7VLRUgeqZdIzlscD2",
+    "authority": "https://login.microsoftonline.com/629af545-8611-44af-9fec-9a098d3e80ca"
+    },
+"auth_request": {
+    "redirect_uri": null,
+    "scopes": ["User.ReadBasic.All"],
+    "response_type": "code"
+    },
+"flask": {
+    "id_web_configs": "MS_ID_WEB_CONFIGS",
+    "auth_endpoints": {
+        "prefix": "/auth",
+        "sign_in": "/sign_in",
+        "edit_profile": "/edit_profile",
+        "redirect": "/redirect",
+        "sign_out": "/sign_out",
+        "post_sign_out": "/post_sign_out"
+    }
+},
+"django": "Django is not yet implemented in this sample"
+}
