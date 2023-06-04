@@ -70,7 +70,18 @@ def create_app(secure_client_credential=None):
     def token_details():
         current_app.logger.info("token_details: user is authenticated, will display token details")
 
-        id_token = ms_identity_web.id_data._id_token_claims
+        # https://github.com/AzureAD/microsoft-authentication-library-for-python/issues/139
+        account = ms_identity_web.acquire_token_silently()
+
+        lookup_id = "{}-{}-idtoken-{}-{}-".format(
+            account.get('home_account_id'),
+            account.get('environment'),
+            "facfe467-8660-40f9-acd0-c397d9088168",
+            account.get('realm'))
+
+        token_cache = ms_identity_web.id_data.token_cache._cache
+        id_token = token_cache.get("IdToken", {}).get(lookup_id, {}).get('secret')
+        #id_token = ms_identity_web.id_data._id_token_claims
         print("=================== Id Token =====================")
         print(id_token)
         return render_template('auth/token.html')
@@ -95,8 +106,7 @@ def create_app(secure_client_credential=None):
 
     return app
 
-if __name__ == '__main__':
-    app=create_app() # this is for running flask's dev server for local testing purposes ONLY
-    app.run(ssl_context='adhoc') # create an adhoc ssl cert for HTTPS on 127.0.0.1
 
-app=create_app()
+if __name__ == '__main__':
+    app = create_app() # this is for running flask's dev server for local testing purposes ONLY
+    app.run()       # create an adhoc ssl cert for HTTPS on 127.0.0.1

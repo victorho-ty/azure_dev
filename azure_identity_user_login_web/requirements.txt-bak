@@ -3,5 +3,5 @@ werkzeug>=1,<2
 flask-session~=0.3.2
 MarkupSafe==2.0.1
 requests>=2,<3
+git+https://github.com/azure-samples/ms-identity-python-samples-common
 pyopenssl==23.1.1
-msal>=1.6.0,<2
